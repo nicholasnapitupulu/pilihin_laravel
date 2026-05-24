@@ -5,21 +5,17 @@
             <img src="{{ asset('img/LOGO PILIH.IN-02.png') }}" alt="PILIH.in Logo" class="h-10 w-auto object-contain rounded-lg">
         </a>
 
-        <!-- Desktop Menu -->
         <div class="hidden md:flex items-center gap-8">
-            <a href="{{ url('/kampus') }}"
-                class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Kampus</a>
-            <a href="#"
-                class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Jurusan</a>
-            <a href="#" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tes
-                Minat</a>
-            <a href="#"
-                class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Dashboard</a>
-            <a href="{{ url('/tentang') }}"
-                class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tentang</a>
+            <a href="{{ url('/kampus') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Kampus</a>
+            <a href="{{ url('/jurusan') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Jurusan</a>
+            <a href="{{ url('/tes') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tes Minat</a>
+            <a href="{{ url('/dashboard') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Dashboard</a>
+            <a href="{{ url('/tentang') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tentang</a>
         </div>
 
         <div class="flex items-center gap-3">
+            {{-- Catatan: Untuk saat ini kita biarkan pakai $_SESSION PHP native dulu, 
+                 nanti kita ubah ke sistem Auth Laravel saat migrasi fitur Login --}}
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="relative">
                     <button onclick="document.getElementById('profileDropdown').classList.toggle('hidden')"
@@ -35,26 +31,20 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
-                    <!-- Dropdown -->
                     <div id="profileDropdown"
                         class="hidden absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl overflow-hidden py-2">
-                        <a href="dashboard.php"
-                            class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">Dashboard Saya</a>
+                        <a href="{{ url('/dashboard') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">Dashboard Saya</a>
                         <div class="border-t border-slate-100 my-1"></div>
-                        <a href="logout.php"
-                            class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition">Logout</a>
+                        <a href="{{ url('/logout') }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition">Logout</a>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="auth.php"
-                    class="hidden md:block text-sm font-bold text-slate-600 hover:text-purple-700 transition mr-2">Login</a>
-                <a href="tes.php"
-                    class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-purple-700 transition shadow-lg">
+                <a href="{{ url('/login') }}" class="hidden md:block text-sm font-bold text-slate-600 hover:text-purple-700 transition mr-2">Login</a>
+                <a href="{{ url('/tes') }}" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-purple-700 transition shadow-lg">
                     Mulai Tes
                 </a>
             <?php endif; ?>
 
-            <!-- Mobile Menu Toggle -->
             <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')"
                 class="md:hidden ml-2 text-slate-600 hover:text-purple-700 focus:outline-none cursor-pointer">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,28 +55,20 @@
         </div>
     </div>
 
-    <!-- Mobile Menu Container -->
     <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100">
         <div class="px-4 pt-2 pb-4 space-y-1 shadow-inner">
-            <a href="kampus.php"
-                class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Kampus</a>
-            <a href="katalog_jurusan.php"
-                class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Jurusan</a>
-            <a href="tes.php"
-                class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tes Minat</a>
-            <a href="dashboard.php"
-                class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Dashboard</a>
-            <a href="{{ url('/tentang') }}"
-                class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tentang</a>
+            <a href="{{ url('/kampus') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Kampus</a>
+            <a href="{{ url('/jurusan') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Jurusan</a>
+            <a href="{{ url('/tes') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tes Minat</a>
+            <a href="{{ url('/dashboard') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Dashboard</a>
+            <a href="{{ url('/tentang') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tentang</a>
             
             <div class="border-t border-slate-100 my-2"></div>
             
             <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="logout.php"
-                    class="block px-3 py-3 rounded-xl text-base font-medium text-red-600 hover:bg-red-50">Logout</a>
+                <a href="{{ url('/logout') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-red-600 hover:bg-red-50">Logout</a>
             <?php else: ?>
-                <a href="auth.php"
-                    class="block px-3 py-3 rounded-xl text-base font-medium text-purple-600 hover:bg-purple-50">Login</a>
+                <a href="{{ url('/login') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-purple-600 hover:bg-purple-50">Login</a>
             <?php endif; ?>
         </div>
     </div>
@@ -94,7 +76,6 @@
 
 <div class="pt-20"></div>
 
-<!-- Close dropdown when clicking outside -->
 <script>
     document.addEventListener('click', function (event) {
         var dropdown = document.getElementById('profileDropdown');

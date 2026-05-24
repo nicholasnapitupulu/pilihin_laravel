@@ -63,10 +63,13 @@
                         </div>
                     </div>
 
-                    {{-- Bagian Bawah: Jurusan Dummy --}}
+                    {{-- Bagian Bawah: Jurusan Dinamis dari Database --}}
                     <div class="flex flex-wrap gap-1 mb-4">
-                        <span class="text-xs bg-slate-50 text-slate-600 px-2 py-1 rounded-full border border-slate-100">Informatika</span>
-                        <span class="text-xs bg-slate-50 text-slate-600 px-2 py-1 rounded-full border border-slate-100">Sistem Informasi</span>
+                        @foreach($k->jurusan as $j)
+                            <span class="text-xs bg-slate-50 text-slate-600 px-2 py-1 rounded-full border border-slate-100">
+                                {{ $j->nama_jurusan }}
+                            </span>
+                        @endforeach
                     </div>
                 </div>
             @endforeach
