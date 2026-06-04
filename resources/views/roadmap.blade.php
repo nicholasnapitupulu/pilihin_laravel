@@ -12,24 +12,8 @@
 </head>
 <body class="bg-slate-50 font-sans text-slate-800">
 
-    {{-- Navbar (Bisa disesuaikan jika kamu pakai layout terpisah) --}}
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-2">
-                    <span class="text-2xl font-extrabold text-purple-600">✨ PILIH.in</span>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="{{ url('/kampus') }}" class="text-slate-500 hover:text-slate-900 text-sm font-medium">Kampus</a>
-                    <a href="{{ url('/jurusan') }}" class="text-slate-900 hover:text-slate-900 text-sm font-medium">Jurusan</a>
-                    <a href="#" class="text-slate-500 hover:text-slate-900 text-sm font-medium">Tes Minat</a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="{{ url('/jurusan') }}" class="text-sm font-semibold text-slate-600 hover:text-slate-900">Kembali</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    @include('components.navbar')
+    
 
     <div class="max-w-5xl mx-auto px-4 py-12">
         {{-- Bagian Header Judul Jurusan --}}
@@ -107,6 +91,8 @@
 
         </div>
     </div>
+
+    @include('components.footer')
 
 </body>
 </html>

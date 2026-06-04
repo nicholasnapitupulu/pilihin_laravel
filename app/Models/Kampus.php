@@ -3,36 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Kampus extends Model
 {
-    // Beritahu Laravel nama tabel yang benar
+    use HasFactory;
+
     protected $table = 'kampus';
-
-    // Beritahu Laravel Primary Key-nya custom
     protected $primaryKey = 'id_kampus';
+    
+    // Hanya ada created_at di tabel, matikan updated_at agar Laravel tidak error saat save
+    const UPDATED_AT = null; 
 
-    // Disable timestamps karena tabelmu hanya punya 'created_at' tanpa 'updated_at'
-    public $timestamps = false; 
-
-    // Kolom apa saja yang boleh diisi (Mass Assignment)
     protected $fillable = [
-        'nama_kampus', 
-        'lokasi', 
-        'akreditasi', 
-        'estimasi_biaya', 
+        'nama_kampus',
+        'lokasi',
+        'akreditasi',
+        'estimasi_biaya',
         'logo_kampus',
-        'created_at'
     ];
 
-    // Relasi Many-to-Many dengan Jurusan
-    public function jurusan()
+    // Relasi Many-to-Many: Kampus memiliki banyak Jurusan (via tabel relasi_kampus_jurusan)
+    public function jurusan(): BelongsToMany
     {
-        return $this->belongsToMany(
-            Jurusan::class, 
-            'relasi_kampus_jurusan', // Nama tabel pivot
-            'id_kampus',             // Foreign key untuk kampus di tabel pivot
-            'id_jurusan'             // Foreign key untuk jurusan di tabel pivot
-        );
+        return $this->belongsToMany(Jurusan::class, 'relasi_kampus_jurusan', 'id_kampus', 'id_jurusan')
+                    ->withPivot('id_relasi');
     }
 }

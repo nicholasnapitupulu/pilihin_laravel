@@ -3,36 +3,42 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Jurusan extends Model
 {
+    use HasFactory;
+
     protected $table = 'jurusan';
     protected $primaryKey = 'id_jurusan';
-    public $timestamps = false; // Tabel jurusan tidak punya created_at & updated_at
+    public $timestamps = false; // Karena tidak ada kolom created_at/updated_at bawaan Laravel
 
     protected $fillable = [
-        'nama_jurusan', 
-        'deskripsi_singkat', 
-        'kategori_relevan', 
-        'prospek_karir', 
-        'gambar_url'
+        'nama_jurusan',
+        'deskripsi_singkat',
+        'kategori_relevan',
+        'prospek_karir',
+        'gambar_url',
     ];
 
-    // Relasi Many-to-Many dengan Kampus
-    public function kampus()
+    // Relasi: Satu jurusan memiliki banyak data roadmap/mata kuliah
+    public function roadmap(): HasMany
     {
-        return $this->belongsToMany(
-            Kampus::class, 
-            'relasi_kampus_jurusan', 
-            'id_jurusan', 
-            'id_kampus'
-        );
+        return $this->hasMany(Roadmap::class, 'id_jurusan', 'id_jurusan');
     }
 
-    // Relasi One-to-Many dengan Roadmap
-    public function roadmap()
+    // Relasi: Satu jurusan bisa muncul di banyak hasil tes
+    public function hasilTes(): HasMany
     {
-        // Ambil data roadmap dan langsung urutkan berdasarkan semester (1, 2, 3...)
-        return $this->hasMany(Roadmap::class, 'id_jurusan', 'id_jurusan')->orderBy('semester', 'asc');
+        return $this->hasMany(HasilTes::class, 'id_jurusan', 'id_jurusan');
+    }
+
+    // Relasi Many-to-Many: Jurusan tersedia di banyak Kampus (via tabel relasi_kampus_jurusan)
+    public function kampus(): BelongsToMany
+    {
+        return $this->belongsToMany(Kampus::class, 'relasi_kampus_jurusan', 'id_jurusan', 'id_kampus')
+                    ->withPivot('id_relasi');
     }
 }
