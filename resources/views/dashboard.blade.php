@@ -29,7 +29,7 @@
                         Eksplorasi Kampus
                     </a>
                     
-                    <form action="" method="POST" onsubmit="return confirm('Yakin ingin keluar?')">
+                    <form action="{{ route('logout') }}" method="POST" onsubmit="return confirm('Yakin ingin keluar?')">
                         @csrf
                         <button type="submit" class="block w-full py-3 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-500 hover:text-white transition text-center">
                             Logout

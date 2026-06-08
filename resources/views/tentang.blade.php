@@ -58,7 +58,7 @@
                         <div class="stat-label">Developer</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-num">95%</div>
+                        <div class="stat-num">90%</div>
                         <div class="stat-label">Akurasi AI</div>
                     </div>
                     <div class="stat-card">
@@ -108,7 +108,7 @@
             
         </label>
         
-        <input type="file" id="photo_faiz" accept="image/*" class="hidden" onchange="previewPhoto(this,'placeholder_faiz','#8b5cf6')"> <span class="role-badge badge-fe">Backend Developer</span>
+        <input type="file" id="photo_faiz" accept="image/*" class="hidden" onchange="previewPhoto(this,'placeholder_faiz','#8b5cf6')"> <span class="role-badge badge-fe">Project Manager</span>
     </div>
 </div>
 
@@ -198,7 +198,7 @@
             
         </label>
         
-        <input type="file" id="photo_faiz" accept="image/*" class="hidden" onchange="previewPhoto(this,'placeholder_faiz','#8b5cf6')"> <span class="role-badge badge-fe">Backend Developer</span>
+        <input type="file" id="photo_faiz" accept="image/*" class="hidden" onchange="previewPhoto(this,'placeholder_faiz','#8b5cf6')"> <span class="role-badge badge-fe">Frontend Developer</span>
     </div>
 </div>
 

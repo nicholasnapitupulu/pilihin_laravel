@@ -171,6 +171,8 @@
                                 <span class="text-6xl block mb-2">📊</span>
                                 <p class="font-bold text-slate-400 font-mono text-sm tracking-widest uppercase">
                                     Visualisasi Roadmap Interactive</p>
+                                <p class="font-bold text-slate-800 font-mono text-sm tracking-widest uppercase">
+                                    -- COMING SOON --</p>
                             </div>
                         </div>
                     </div>
