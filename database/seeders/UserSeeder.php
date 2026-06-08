@@ -29,6 +29,15 @@ class UserSeeder extends Seeder
                 'role' => 'user',
                 'created_at' => '2026-04-12 10:42:01',
             ],
+            [
+                'id_user' => 3,
+                'nama_lengkap' => 'admin',
+                'email' => 'admin@gmail.com',
+                'password' => 'admin',
+                'asal_sekolah' => 'SMA 2 Jakarta',
+                'role' => 'admin',
+                'created_at' => '2026-04-12 10:42:01',
+            ],
         ];
 
         foreach ($data as $item) {
