@@ -46,16 +46,16 @@
             <div class="lg:col-span-3 mb-4">
                 <h4 class="text-white font-bold mb-2 text-lg tracking-wide">Fitur Kami</h4>
                 <ul class="space-y-3">
-                    <li><a href="tes.php"
+                    <li><a href="{{ url('/tes') }}"
                             class="text-slate-400 text-sm hover:text-purple-400 hover:translate-x-1 transition duration-300 inline-block">Tes
                             Minat Bakat</a></li>
-                    <li><a href="dashboard.php"
+                    <li><a href="{{ url('/dashboard') }}"
                             class="text-slate-400 text-sm hover:text-purple-400 hover:translate-x-1 transition duration-300 inline-block">Dashboard
                             & Riwayat</a></li>
-                    <li><a href="katalog_jurusan.php"
+                    <li><a href="{{ url('/jurusan') }}"
                             class="text-slate-400 text-sm hover:text-purple-400 hover:translate-x-1 transition duration-300 inline-block">Roadmap
                             Semester</a></li>
-                    <li><a href="tentang.php"
+                    <li><a href="{{ url('/tentang') }}"
                             class="text-slate-400 text-sm hover:text-purple-400 hover:translate-x-1 transition duration-300 inline-block">Prospek
                             Karir</a></li>
                 </ul>
@@ -65,13 +65,13 @@
             <div class="lg:col-span-2 mb-4">
                 <h4 class="text-white font-bold mb-2 text-lg tracking-wide">Eksplorasi</h4>
                 <ul class="space-y-3">
-                    <li><a href="kampus.php"
+                    <li><a href="{{ url('/kampus') }}"
                             class="text-slate-400 text-sm hover:text-indigo-400 hover:translate-x-1 transition duration-300 inline-block">Daftar
                             Kampus</a></li>
-                    <li><a href="katalog_jurusan.php"
+                    <li><a href="{{ url('/jurusan') }}"
                             class="text-slate-400 text-sm hover:text-indigo-400 hover:translate-x-1 transition duration-300 inline-block">Katalog
                             Jurusan</a></li>
-                    <li><a href="index.php"
+                    <li><a href="{{ url('/') }}
                             class="text-slate-400 text-sm hover:text-indigo-400 hover:translate-x-1 transition duration-300 inline-block">Top
                             Universitas</a></li>
                 </ul>
@@ -87,7 +87,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                         </svg>
-                        hi@pilih.in
+                        pilih.in@gmail.com
                     </p>
                     <p class="flex items-start text-sm text-slate-400 leading-relaxed">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

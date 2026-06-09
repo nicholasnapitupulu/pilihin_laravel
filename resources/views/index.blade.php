@@ -143,16 +143,16 @@
 
                         <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
                             <?php if (isset($_SESSION['user_id'])): ?>
-                                <a href="dashboard.php"
+                                <a href="{{ url('/dashboard') }}"
                                     class="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition duration-300">
                                     Buka Dashboard Saya
                                 </a>
                             <?php else: ?>
-                                <a href="tes.php"
+                                <a href="{{ url('/tes') }}"
                                     class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-2xl shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/50 hover:-translate-y-1 transition duration-300">
                                     Mulai Assessment Gratis
                                 </a>
-                                <a href="kampus.php"
+                                <a href="{{ url('/kampus') }}"
                                     class="w-full sm:w-auto px-8 py-4 bg-white/80 backdrop-blur-md text-slate-700 font-bold rounded-2xl hover:bg-white transition duration-300 border border-slate-200 shadow-sm hover:shadow-md">
                                     Eksplorasi Kampus
                                 </a>
@@ -303,7 +303,7 @@
 
                 <!-- CTA di bawah tutorial -->
                 <div class="text-center mt-16 reveal">
-                    <a href="tes.php"
+                    <a href="{{ url('/tes') }}"
                         class="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-2xl shadow-xl shadow-purple-500/30 hover:-translate-y-1 hover:shadow-2xl transition duration-300">
                         <span>Coba Sekarang</span>
                     </a>
@@ -384,7 +384,7 @@
                                         <!-- Estimasi biaya -->
                                         <p class="text-slate-400 text-xs mb-6">💰 <?= htmlspecialchars($k->estimasi_biaya) ?>
                                         </p>
-                                        <a href="kampus.php"
+                                        <a href="{{ url('/kampus') }}"
                                             class="block w-full text-center py-2.5 rounded-xl border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition">
                                             Lihat Detail →
                                         </a>

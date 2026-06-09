@@ -15,8 +15,10 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
 
     <div class="relative z-10 w-full max-w-md p-8 bg-white/70 backdrop-blur-lg border border-slate-200 rounded-3xl shadow-xl mx-4">
-        <div class="text-center mb-8">
-            <a href="/" class="font-bold text-3xl text-purple-600 block tracking-tight mb-2">PILIH.in</a>
+        <div class="flex flex-col items-center text-center mb-8 w-full">
+            <a href="{{ url('/') }}" class="hover:opacity-80 transition hover:scale-105 duration-300 mb-2">
+                <img src="{{ asset('img/LOGO PILIH.IN-02.png') }}" alt="PILIH.in Logo" class="h-10 w-auto object-contain rounded-lg">
+            </a>
             <p class="text-slate-500 text-sm" id="form-subtitle">Masuk untuk menyimpan roadmap karirmu.</p>
         </div>
 

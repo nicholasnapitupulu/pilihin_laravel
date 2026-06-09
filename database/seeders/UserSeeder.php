@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
                 'email' => 'faiz@gmail.com',
                 'password' => 'ujicoba', // password asli dari SQL
                 'asal_sekolah' => 'SMAN 2 BOJONEGORO',
+                'foto_profil' => 'foto_1_1781028900.jpg',
                 'role' => 'user',
                 'created_at' => '2026-04-09 12:11:03',
             ],

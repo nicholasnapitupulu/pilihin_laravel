@@ -19,6 +19,7 @@ Route::get('/tentang', function () {return view('tentang');});
 // ROUTE USER
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/update-photo', [DashboardController::class, 'updatePhoto'])->name('profile.update-photo');
     Route::get('/tes', [TesController::class, 'index'])->name('tes.index');
     Route::post('/tes/proses', [TesController::class, 'proses'])->name('tes.proses');
 });
@@ -33,6 +34,13 @@ Route::get('/login', [AuthController::class, 'showAuthPage'])->name('login.page'
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
+// Fitur Logout
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+// Hasil Pengerjaan
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::post('/tes/proses', [TesController::class, 'proses'])->name('tes.proses');
+    Route::get('/tes/hasil/{id}', [TesController::class, 'tampilkanHasil'])->name('tes.hasil');
 });
