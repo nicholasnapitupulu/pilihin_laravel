@@ -8,6 +8,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TesController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProdiKampusController;
+use App\Http\Controllers\SuperAdminController;
 
 // ROUTE GUEST
 Route::get('/', [HomeController::class, 'index']);
@@ -27,6 +29,22 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 // ROUTE ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/jurusan', [JurusanController::class, 'admin_index'])->name('jurusan.admin_index');
+    Route::post('/admin/jurusan', [JurusanController::class, 'store'])->name('jurusan.store');
+    Route::delete('/admin/jurusan/{id}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
+
+    Route::get('/admin/kampus', [KampusController::class, 'admin_index'])->name('kampus.admin_index');
+    Route::post('/admin/kampus', [KampusController::class, 'store'])->name('kampus.store');
+    Route::delete('/admin/kampus/{id}', [KampusController::class, 'destroy'])->name('kampus.destroy');
+
+    Route::get('/admin/prodi', [ProdiKampusController::class, 'index'])->name('prodi.index');
+    Route::post('/admin/prodi/update', [ProdiKampusController::class, 'update'])->name('prodi.update');
+});
+
+Route::middleware(['auth', 'role:superadmin'])->group(function () {
+    Route::get('/superadmin/dashboard', [SuperAdminController::class, 'index'])->name('superadmin.dashboard');
+    Route::post('/user', [SuperAdminController::class, 'store'])->name('user.store');
+    Route::delete('/user/{id}', [SuperAdminController::class, 'destroy'])->name('user.destroy');
 });
 
 // ROUTE AUTH

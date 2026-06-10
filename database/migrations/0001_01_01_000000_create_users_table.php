@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('asal_sekolah', 100)->nullable();
             $table->string('foto_profil', 255)->nullable();
-            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->enum('role', ['admin', 'user', 'superadmin'])->default('user');
             $table->timestamps();
         });
 

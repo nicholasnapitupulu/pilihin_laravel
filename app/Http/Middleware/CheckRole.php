@@ -27,6 +27,9 @@ class CheckRole
             } else if (auth()->user()->role == 'admin') {
                 return redirect()->route('admin.dashboard');
             }
+            else if (auth()->user()->role == 'superadmin') {
+                return redirect()->route('superadmin.dashboard');
+            }
         }
 
         return $next($request);
