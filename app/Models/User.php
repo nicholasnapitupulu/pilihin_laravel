@@ -23,6 +23,7 @@ class User extends Authenticatable
         'asal_sekolah',
         'foto_profil',
         'role',
+        'status',
     ];
 
     /**

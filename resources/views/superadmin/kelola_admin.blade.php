@@ -70,4 +70,46 @@
             toggleModal('modalEdit');
         }
     </script>
+
+    <div id="modalTambah" class="hidden fixed inset-0 bg-slate-900/50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-xl w-96">
+            <h2 class="font-bold mb-4">Tambah Admin Baru</h2>
+            <form action="{{ route('superadmin.admin.store') }}" method="POST">
+                @csrf
+                <input type="text" name="nama_lengkap" placeholder="Nama Lengkap" class="w-full border p-2 mb-2 rounded" required>
+                <input type="email" name="email" placeholder="Email" class="w-full border p-2 mb-2 rounded" required>
+                <input type="password" name="password" placeholder="Password" class="w-full border p-2 mb-4 rounded" required>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="toggleModal('modalTambah')" class="text-slate-500">Batal</button>
+                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if ($errors->any())
+        <div class="bg-red-500 text-white p-4 rounded mt-4">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div id="modalEdit" class="hidden fixed inset-0 bg-slate-900/50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-xl w-96">
+            <h2 class="font-bold mb-4">Edit Admin</h2>
+            <form id="formEditAdmin" method="POST">
+                @csrf @method('PUT')
+                <input type="text" name="nama_lengkap" id="edit_nama" class="w-full border p-2 mb-2 rounded" required>
+                <input type="email" name="email" id="edit_email" class="w-full border p-2 mb-2 rounded" required>
+                <input type="password" name="password" placeholder="Password baru (opsional)" class="w-full border p-2 mb-4 rounded">
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="toggleModal('modalEdit')" class="text-slate-500">Batal</button>
+                    <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
