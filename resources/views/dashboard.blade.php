@@ -52,18 +52,16 @@
                         Ambil Tes Baru
                     </a>
 
-                    <a href="{{ url('/kampus') }}"
-                    class="block w-full py-3.5 text-white font-bold rounded-xl text-center text-sm shadow-sm"
-                    style="background-color:#38bdf8;">
+                    <a href="{{ url('/kampus') }}" 
+                    class="block w-full py-3.5 bg-blue-100 border border-blue-200 text-slate-700 font-bold rounded-xl text-center text-sm transition-all duration-300 ease-in-out hover:bg-blue-200 hover:text-slate-900 hover:shadow-md hover:shadow-blue-100/50 active:scale-[0.97] active:duration-75 select-none">
                         Eksplorasi Kampus
                     </a>
 
                     <form action="{{ route('logout') }}" method="POST" class="w-full">
                         @csrf
-                        <button type="submit"
-                                class="w-full py-3.5 text-white font-bold rounded-xl text-center text-sm shadow-sm"
-                                style="background-color:#ef4444;">
-                            Logout dari Akun
+                        <button type="submit" 
+                                class="w-full py-3.5 bg-red-50 border border-red-100 text-red-600 font-bold rounded-xl text-center text-sm transition-all duration-300 ease-in-out hover:bg-red-100 hover:text-red-700 hover:shadow-md hover:shadow-red-100/50 active:scale-[0.97] active:duration-75 select-none">
+                            Logout Akun
                         </button>
                     </form>
 

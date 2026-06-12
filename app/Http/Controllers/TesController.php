@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Questions;
-use App\Models\Hasil_Tes; // Menggunakan snake_case sesuai nama Model di seeder-mu
+use App\Models\Hasil_Tes;
 use App\Models\Jurusan;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,23 +12,20 @@ class TesController extends Controller
 {
     public function index()
     {
-        // Mengambil semua data soal diurutkan berdasarkan id_soal
         $questions = Questions::orderBy('id_soal', 'asc')->get();
-
         return view('tes', compact('questions'));
     }
 
     public function proses(Request $request)
     {
-        // 1. Validasi input jawaban yang masuk
+        // 1. Validasi Input Jawaban
         $request->validate([
             'jawaban' => 'required|array',
         ]);
 
-        $jawabanUser = $request->input('jawaban'); // Format: [id_soal => skor_1_sampai_5]
+        $jawabanUser = $request->input('jawaban'); // [id_soal => skor_1_sampai_5]
 
-        // 2. Inisialisasi penampung skor untuk setiap kata kunci kelompok minat
-        // Kita petakan rumpun string dari seeder: 'IT', 'Kedokteran', 'Teknik', 'Psikologi', dll.
+        // 2. Inisialisasi Wadah Skor Rumpun (Berdasarkan seeder kategori_minat kamu)
         $skorRumpun = [
             'IT'           => 0,
             'Kedokteran'   => 0,
@@ -44,64 +41,88 @@ class TesController extends Controller
             'Otomotif'     => 0,
         ];
 
-        // 3. Hitung akumulasi skor user berdasarkan string kategori_minat di soal
+        // Penampung nilai maksimum yang *mungkin* didapat per rumpun untuk pembagi persentase dinamis
+        $skorMaksimalRumpun = $skorRumpun; 
+
+        // 3. Kalkulasi Skor Pengguna & Skor Maksimal Terdistribusi
+        $allQuestions = Questions::all()->keyBy('id_soal');
+
         foreach ($jawabanUser as $id_soal => $skor) {
-            $soal = Questions::find($id_soal);
+            $soal = $allQuestions->get($id_soal);
             
-            if ($soal) {
-                // Contoh isi kolom: "IT, Kedokteran, Teknik"
-                $kategoriTeks = $soal->kategori_minat; 
-                
-                // Pecah string berdasarkan koma menjadi array, lalu bersihkan spasi kosongnya
-                $listRumpunSoal = array_map('trim', explode(',', $kategoriTeks));
+            if ($soal && $soal->kategori_minat) {
+                // Pecah string koma (ex: "IT, Kedokteran, Teknik") menjadi array bersih
+                $listRumpunSoal = array_map('trim', explode(',', $soal->kategori_minat));
 
                 foreach ($listRumpunSoal as $rumpun) {
                     if (array_key_exists($rumpun, $skorRumpun)) {
                         $skorRumpun[$rumpun] += (int)$skor;
+                        $skorMaksimalRumpun[$rumpun] += 5; // Bobot nilai 5 jika user pilih 'Sangat Setuju'
                     }
                 }
             }
         }
 
-        // 4. Cari rumpun dengan nilai tertinggi
-        arsort($skorRumpun); 
+        // 4. Urutkan Rumpun untuk Mencari Minat Tertinggi User
+        arsort($skorRumpun);
         $rumpunTertinggi = array_key_first($skorRumpun);
         $skorTertinggi = $skorRumpun[$rumpunTertinggi];
 
-        // 5. Cari id_jurusan yang cocok di database berdasarkan rumpun tertinggi tersebut
-        // Kita cari nama jurusan yang mirip atau mengandung kata kunci rumpun tertinggi
-        $jurusanCocok = Jurusan::where('nama_jurusan', 'LIKE', '%' . $rumpunTertinggi . '%')->first();
-        
-        // Jika tidak ketemu di database, berikan fallback/default ke id_jurusan 1 atau 10
-        $idJurusanTerpilih = $jurusanCocok ? $jurusanCocok->id_jurusan : 1; 
+        // 5. ALGORITMA REKOMENDASI JURUSAN (Akurat Berdasarkan Bobot Kecocokan Terbanyak)
+        $semuaJurusan = Jurusan::all();
+        $jurusanTerpilih = null;
+        $skorKecocokanFinal = 0;
+        $bobotKecocokanMaksimal = -1;
 
-        // Hitung persentase skor_kecocokan (Skor didapat dibandingkan terhadap nilai ideal maksimum, misal 80%)
-        // Kamu bisa sesuaikan rumusnya. Di sini kita buat rentang persentase dinamis maksimal 100
-        $skorMaksimalEstimasi = 25; // Asumsi bobot sebaran soal
-        $persentaseKecocokan = min(round(($skorTertinggi / $skorMaksimalEstimasi) * 100), 100);
+        foreach ($semuaJurusan as $jurusan) {
+            if ($jurusan->kategori_relevan) {
+                // Pecah tag rumpun milik jurusan (ex: "IT, Bisnis" -> ['IT', 'Bisnis'])
+                $rumpunJurusan = array_map('trim', explode(',', $jurusan->kategori_relevan));
 
-        // 6. Simpan ke database sesuai struktur kolom Hasil_TesSeeder
+                // Hitung berapa banyak rumpun jurusan yang diminati oleh user berdasarkan jawaban mereka
+                $bobotMatchKeJurusan = 0;
+                foreach ($rumpunJurusan as $rj) {
+                    if (isset($skorRumpun[$rj])) {
+                        $bobotMatchKeJurusan += $skorRumpun[$rj];
+                    }
+                }
+
+                // Cari jurusan yang memiliki akumulasi nilai kecocokan tertinggi
+                if ($bobotMatchKeJurusan > $bobotKecocokanMaksimal) {
+                    $bobotKecocokanMaksimal = $bobotMatchKeJurusan;
+                    $jurusanTerpilih = $jurusan;
+                }
+            }
+        }
+
+        // Fallback jika tidak ada data jurusan yang match sama sekali
+        $idJurusanFinal = $jurusanTerpilih ? $jurusanTerpilih->id_jurusan : 1;
+
+        // 6. Perhitungan Persentase Kelayakan Dinamis (Anti Bocor di atas 100%)
+        $maksimalMungkinRumpun = $skorMaksimalRumpun[$rumpunTertinggi] ?? 5;
+        $skorKecocokanFinal = ($skorTertinggi > 0) 
+            ? min(round(($skorTertinggi / $maksimalMungkinRumpun) * 100), 100) 
+            : 0;
+
+        // 7. Simpan ke Database
         $hasil = Hasil_Tes::create([
-            'id_user' => Auth::id() ?? 1, // Jika belum login, fallback ke id_user 1 untuk testing
-            'id_jurusan' => $idJurusanTerpilih,
-            'skor_kecocokan' => $persentaseKecocokan,
-            'tanggal_tes' => now()
+            'id_user'        => Auth::id() ?? 1,
+            'id_jurusan'     => $idJurusanFinal,
+            'skor_kecocokan' => $skorKecocokanFinal,
+            'tanggal_tes'    => now()
         ]);
 
-        // 7. Alihkan halaman ke view hasil dengan membawa id_hasil yang baru dibuat
-        return redirect()->route('tes.hasil', ['id' => $hasil->id_hasil])->with('success', 'Tes berhasil diselesaikan!');
+        return redirect()->route('tes.hasil', ['id' => $hasil->id_hasil])
+            ->with('success', 'Tes minat bakat berhasil dianalisis!');
     }
 
     public function tampilkanHasil($id)
     {
-        // Mengambil data hasil beserta relasi model jurusannya
         $hasil = Hasil_Tes::with('jurusan')->findOrFail($id);
 
-        // Siasati data untuk Radar Chart.js agar menampilkan rumpun utama dari seeder kuesioner kamu
-        // Kita ambil beberapa sampel rumpun utama sebagai label grafik jaring laba-laba
+        // Menampilkan label grafik jaring laba-laba
         $labels = ['IT & Teknik', 'Psikologi & Sosial', 'Desain & Seni', 'Bisnis & Manajemen', 'Akuntansi & Admin'];
         
-        // Contoh kalkulasi visualisasi dummy berbasis skor_kecocokan agar grafik tetap terisi proporsional
         $base = $hasil->skor_kecocokan;
         $dataSkor = [
             $base, 

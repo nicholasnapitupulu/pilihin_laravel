@@ -140,7 +140,7 @@
                         <div class="photo-wrap">
                         <div class="relative"> <label for="photo_faiz" class="cursor-pointer block"> <div class="photo-placeholder fe relative group w-32 h-32 overflow-hidden rounded-full border-2 border-purple-600" id="placeholder_faiz">
 
-                                    <img src="img/Faiz.jpeg" alt="Foto Faiz" class="w-full h-full object-cover object-center rounded-full">
+                                    <img src="img/Faiz.jpg" alt="Foto Faiz" class="w-full h-full object-cover object-center rounded-full">
 
                                     <div class="upload-overlay absolute inset-0 bg-black/50 flex flex-col items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" class="w-6 h-6 mb-1">
@@ -334,8 +334,8 @@
                     PILIH.in.
                 </p>
                 <div class="reveal cta-btns" style="transition-delay:200ms;">
-                    <a href="tes.php" class="cta-btn-white">🚀 Mulai Tes Gratis</a>
-                    <a href="kampus.php" class="cta-btn-outline">🏛️ Eksplorasi Kampus</a>
+                    <a href="{{ url('/tes') }}" class="cta-btn-white">🚀 Mulai Tes Gratis</a>
+                    <a href="{{ url('/kampus') }}" class="cta-btn-outline">🏛️ Eksplorasi Kampus</a>
                 </div>
             </div>
         </section>

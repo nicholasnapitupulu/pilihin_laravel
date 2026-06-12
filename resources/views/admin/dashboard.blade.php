@@ -16,7 +16,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                    <p class="text-slate-500 text-sm font-bold uppercase tracking-wider">Total Siswa</p>
+                    <p class="text-slate-500 text-sm font-bold uppercase tracking-wider">Total User</p>
                     <h3 class="text-4xl font-black mt-2 text-slate-900">{{ $count_users }}</h3>
                 </div>
                 

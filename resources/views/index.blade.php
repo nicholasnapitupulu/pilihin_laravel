@@ -384,7 +384,8 @@
                                         <!-- Estimasi biaya -->
                                         <p class="text-slate-400 text-xs mb-6">💰 <?= htmlspecialchars($k->estimasi_biaya) ?>
                                         </p>
-                                        <a href="{{ url('/kampus') }}"
+                                        <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode($k->nama_kampus . ' ' . $k->lokasi) ?>"
+                                            target="_blank"
                                             class="block w-full text-center py-2.5 rounded-xl border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition">
                                             Lihat Detail →
                                         </a>

@@ -9,8 +9,8 @@
             <a href="{{ url('/kampus') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Kampus</a>
             <a href="{{ url('/jurusan') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Jurusan</a>
             <a href="{{ url('/tes') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tes Minat</a>
-            <a href="{{ url('/dashboard') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Dashboard</a>
             <a href="{{ url('/tentang') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tentang</a>
+            <a href="{{ url('/dashboard') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Dashboard</a>
         </div>
 
         <div class="flex items-center gap-3">
@@ -20,18 +20,35 @@
                 <div class="relative">
                     <button onclick="document.getElementById('profileDropdown').classList.toggle('hidden')"
                         class="flex items-center gap-3 bg-white/80 border border-purple-100 px-4 py-2 rounded-2xl hover:shadow-md transition cursor-pointer">
-                        <div class="w-8 h-8 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md">
-                            {{ strtoupper(substr(Auth::user()->nama_lengkap ?? 'U', 0, 1)) }}
+                        
+                        <!-- AVATAR BULAT (FOTO DARI DASHBOARD / AUTH) -->
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden shadow-md">
+                            @if(
+                                (isset($user_foto) && $user_foto && file_exists(public_path('user_foto/' . $user_foto))) || 
+                                (Auth::user()->foto_profil && file_exists(public_path('user_foto/' . Auth::user()->foto_profil)))
+                            )
+                                <img src="{{ asset('user_foto/' . ($user_foto ?? Auth::user()->foto_profil)) }}" 
+                                    alt="Foto Profil"
+                                    class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xs">
+                                    {{ strtoupper(substr($nama_user ?? Auth::user()->nama_lengkap ?? 'U', 0, 1)) }}
+                                </div>
+                            @endif
                         </div>
+                        
+                        <!-- NAMA PANGGULAN USER -->
                         <span class="hidden md:block text-sm font-bold text-slate-700">
-                            {{ explode(' ', Auth::user()->nama_lengkap ?? 'User')[0] }}
+                            {{ explode(' ', $nama_user ?? Auth::user()->nama_lengkap ?? 'User')[0] }}
                         </span>
+                        
                         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
                     </button>
                     
-                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl overflow-hidden py-2">
+                    <!-- DROPDOWN MENU -->
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl overflow-hidden py-2 z-50">
                         <a href="{{ url('/dashboard') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition">Dashboard Saya</a>
                         <div class="border-t border-slate-100 my-1"></div>
                         
@@ -62,13 +79,14 @@
         </div>
     </div>
 
+    <!-- MOBILE MENU -->
     <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100">
         <div class="px-4 pt-2 pb-4 space-y-1 shadow-inner">
             <a href="{{ url('/kampus') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Kampus</a>
             <a href="{{ url('/jurusan') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Jurusan</a>
             <a href="{{ url('/tes') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tes Minat</a>
-            <a href="{{ url('/dashboard') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Dashboard</a>
             <a href="{{ url('/tentang') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tentang</a>
+            <a href="{{ url('/dashboard') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Dashboard</a>
             
             <div class="border-t border-slate-100 my-2"></div>
             

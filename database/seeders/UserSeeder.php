@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
                 'id_user' => 1,
                 'nama_lengkap' => 'faiz',
                 'email' => 'faiz@gmail.com',
-                'password' => 'ujicoba', // password asli dari SQL
+                'password' => 'faiz1234',
                 'asal_sekolah' => 'SMAN 2 BOJONEGORO',
                 'foto_profil' => 'foto_1_1781028900.jpg',
                 'role' => 'user',
@@ -47,6 +47,24 @@ class UserSeeder extends Seeder
                 'asal_sekolah' => 'SMA 3 Jakarta',
                 'role' => 'superadmin',
                 'created_at' => '2026-04-12 10:42:01',
+            ],
+            [
+                'id_user' => 5,
+                'nama_lengkap' => 'naufal',
+                'email' => 'naufal@gmail.com',
+                'password' => 'naufal123',
+                'asal_sekolah' => 'SMA 1 Sidoarjo',
+                'role' => 'user',
+                'created_at' => '2026-05-12 10:42:01',
+            ],
+            [
+                'id_user' => 6,
+                'nama_lengkap' => 'nicholas',
+                'email' => 'nicholas@gmail.com',
+                'password' => 'nicholas123',
+                'asal_sekolah' => 'SMA 2 Jakarta',
+                'role' => 'user',
+                'created_at' => '2026-05-12 10:44:01',
             ]
 
         ];
