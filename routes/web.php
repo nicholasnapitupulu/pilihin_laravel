@@ -60,8 +60,11 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('supe
     Route::delete('/admin/{id}', [SuperAdminController::class, 'destroy'])->name('admin.destroy');
     Route::patch('/admin/{id}/toggle-status', [SuperAdminController::class, 'toggleStatus'])->name('admin.toggle_status');
 
-    // 3. Placeholder Menu Sidebar Lainnya
-    Route::get('/users', function() { return "Halaman Kelola Pengguna (Siswa)"; })->name('users.index');
+    // 3. Halaman Kelola Pengguna (Siswa)
+    Route::get('/users', [SuperAdminController::class, 'userIndex'])->name('users.index');
+    Route::delete('/users/{id}', [SuperAdminController::class, 'destroyUser'])->name('users.destroy');
+    
+    // Placeholder untuk yang belum dibuat
     Route::get('/logs', function() { return "Halaman Log Aktivitas"; })->name('logs.index');
     Route::get('/settings', function() { return "Halaman Pengaturan Global"; })->name('settings.index');
     

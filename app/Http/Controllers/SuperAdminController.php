@@ -140,4 +140,28 @@ class SuperAdminController extends Controller
         // Dialihkan kembali ke halaman Kelola Admin setelah menghapus data
         return redirect()->route('superadmin.admin.index')->with('success', 'Akun Admin telah berhasil dihapus!');
     }
+
+    /**
+     * HALAMAN KELOLA SISWA
+     */
+    public function userIndex()
+{
+    // Mengambil semua user dengan role 'user' (siswa)
+    $users = User::where('role', 'user')->orderBy('id_user', 'desc')->get();
+    
+    // UBAH DARI 'superadmin.users.index' MENJADI 'superadmin.kelola_user'
+    return view('superadmin.kelola_user', compact('users'));
+}
+
+    /**
+     * HAPUS AKUN SISWA
+     */
+    public function destroyUser($id)
+    {
+        $user = User::where('id_user', $id)->firstOrFail();
+        $user->delete();
+        
+        return redirect()->route('superadmin.users.index')->with('success', 'Akun Siswa berhasil dihapus!');
+    }
+
 }
