@@ -17,28 +17,26 @@ class SuperAdminController extends Controller
     {
         // Mengambil statistik user per bulan dengan cara yang aman untuk MySQL & SQLite
         $usersPerMonth = User::where('role', 'user')
-            ->select(DB::raw("COUNT(id_user) as count"), DB::raw("MONTH(created_at) as month_num"))
+            ->select(DB::raw("COUNT(id_user) as count"), DB::raw("strftime('%m', created_at) as month_num"))
             ->whereYear('created_at', 2026)
             ->groupBy('month_num')
             ->orderBy('month_num')
             ->get();
 
         $monthNames = [
-            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 
-            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 
-            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', 
+            '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', 
+            '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
         ];
 
         $chartLabels = [];
         $chartData = [];
 
         foreach ($usersPerMonth as $data) {
-            // Karena MONTH() mengembalikan integer (1, 2, dst), kita pakai indeks integer
             $chartLabels[] = $monthNames[$data->month_num] ?? 'Bulan ' . $data->month_num;
             $chartData[] = (int) $data->count;
         }
 
-        // Fallback jika data kosong
         if (empty($chartLabels)) {
             $chartLabels = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
             $chartData = [0, 0, 0, 0, 0, 0];
