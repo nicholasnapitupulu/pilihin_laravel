@@ -12,63 +12,57 @@ class SuperAdminController extends Controller
 {
     /**
      * 1. HALAMAN DASHBOARD (Grafik & Statistik)
-     * Menampilkan metrik data kuantitas dan chart perkembangan sistem.
      */
     public function index()
     {
-        // Hitung registrasi user baru (role: 'user') per bulan di tahun 2026 untuk grafik
-        $usersPerMonth = User::where('role', '=', 'user')
-            ->select(DB::raw("COUNT(id_user) as count"), DB::raw("MONTHNAME(created_at) as month"))
+        // Mengambil statistik user per bulan dengan cara yang aman untuk MySQL & SQLite
+        $usersPerMonth = User::where('role', 'user')
+            ->select(DB::raw("COUNT(id_user) as count"), DB::raw("strftime('%m', created_at) as month_num"))
             ->whereYear('created_at', 2026)
-            ->groupBy(DB::raw("MONTH(created_at)"), DB::raw("MONTHNAME(created_at)"))
-            ->orderBy(DB::raw("MONTH(created_at)"))
+            ->groupBy('month_num')
+            ->orderBy('month_num')
             ->get();
 
-        $chartLabels = $usersPerMonth->pluck('month')->toArray();
-        $chartData = $usersPerMonth->pluck('count')->toArray();
+        $monthNames = [
+            '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April', 
+            '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus', 
+            '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+        ];
 
-        // Default value jika data bulan masih kosong agar grafik tidak blank
+        $chartLabels = [];
+        $chartData = [];
+
+        foreach ($usersPerMonth as $data) {
+            $chartLabels[] = $monthNames[$data->month_num] ?? 'Bulan ' . $data->month_num;
+            $chartData[] = (int) $data->count;
+        }
+
         if (empty($chartLabels)) {
             $chartLabels = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
             $chartData = [0, 0, 0, 0, 0, 0];
         }
 
-        // Ambil total baris pengerjaan tes dari tabel hasil_tes
         $totalTes = DB::table('hasil_tes')->count(); 
-        
-        // Ambil total user biasa (siswa) terdaftar global
-        $totalSiswa = User::where('role', '=', 'user')->count();
+        $totalSiswa = User::where('role', 'user')->count();
 
-        // Mengambil data log aktivitas (Aman dari crash jika tabel belum di-migrate)
         $ringkasanLogs = Schema::hasTable('log_aktivitas') 
             ? DB::table('log_aktivitas')->orderBy('created_at', 'desc')->limit(5)->get() 
             : collect([]);
 
-        // Kirim data khusus untuk keperluan dashboard statistik saja
         return view('superadmin.dashboard', compact(
-            'chartLabels', 
-            'chartData', 
-            'totalTes', 
-            'totalSiswa', 
-            'ringkasanLogs'
+            'chartLabels', 'chartData', 'totalTes', 'totalSiswa', 'ringkasanLogs'
         ));
     }
 
     /**
-     * 2. HALAMAN KELOLA ADMIN (Tabel & Manajemen CRUD)
-     * Menampilkan tabel daftar admin operasional dan menangani aksi modal.
+     * 2. HALAMAN KELOLA ADMIN
      */
     public function adminIndex()
     {
-        // Mengambil semua data dengan role admin untuk dimasukkan ke tabel kelola admin
-        $users = User::where('role', '=', 'admin')->orderBy('id_user', 'desc')->get();
-
+        $users = User::where('role', 'admin')->orderBy('id_user', 'desc')->get();
         return view('superadmin.kelola_admin', compact('users'));
     }
 
-    /**
-     * PROSES SIMPAN ADMIN BARU
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -86,13 +80,9 @@ class SuperAdminController extends Controller
             'status' => 'aktif', 
         ]);
 
-        // Dialihkan kembali ke halaman Kelola Admin setelah menyimpan data
         return redirect()->route('superadmin.admin.index')->with('success', 'Akun Admin baru berhasil didaftarkan!');
     }
 
-    /**
-     * PROSES UPDATE DATA ADMIN
-     */
     public function update(Request $request, $id)
     {
         $user = User::where('id_user', $id)->firstOrFail();
@@ -111,57 +101,37 @@ class SuperAdminController extends Controller
         }
 
         $user->save();
-        
-        // Dialihkan kembali ke halaman Kelola Admin setelah update data
         return redirect()->route('superadmin.admin.index')->with('success', 'Data akun admin berhasil diperbarui!');
     }
 
-    /**
-     * PROSES TURN ON/OFF OPERASIONAL ADMIN
-     */
     public function toggleStatus($id)
     {
         $user = User::where('id_user', $id)->firstOrFail();
         $user->status = ($user->status === 'aktif') ? 'nonaktif' : 'aktif';
         $user->save();
-
-        // Dialihkan kembali ke halaman Kelola Admin setelah mengubah status
         return redirect()->route('superadmin.admin.index')->with('success', 'Status operasional akun admin berhasil diubah!');
     }
 
-    /**
-     * PROSES HAPUS AKUN ADMIN
-     */
     public function destroy($id)
     {
         $user = User::where('id_user', $id)->firstOrFail();
         $user->delete();
-        
-        // Dialihkan kembali ke halaman Kelola Admin setelah menghapus data
         return redirect()->route('superadmin.admin.index')->with('success', 'Akun Admin telah berhasil dihapus!');
     }
 
     /**
-     * HALAMAN KELOLA SISWA
+     * 3. HALAMAN KELOLA SISWA
      */
     public function userIndex()
-{
-    // Mengambil semua user dengan role 'user' (siswa)
-    $users = User::where('role', 'user')->orderBy('id_user', 'desc')->get();
-    
-    // UBAH DARI 'superadmin.users.index' MENJADI 'superadmin.kelola_user'
-    return view('superadmin.kelola_user', compact('users'));
-}
+    {
+        $users = User::where('role', 'user')->orderBy('id_user', 'desc')->get();
+        return view('superadmin.kelola_user', compact('users'));
+    }
 
-    /**
-     * HAPUS AKUN SISWA
-     */
     public function destroyUser($id)
     {
         $user = User::where('id_user', $id)->firstOrFail();
         $user->delete();
-        
         return redirect()->route('superadmin.users.index')->with('success', 'Akun Siswa berhasil dihapus!');
     }
-
 }
