@@ -16,7 +16,7 @@
 
     <main class="pt-32 pb-20 container mx-auto px-4 lg:px-12">
         <div class="text-center mb-12">
-            <h1 class="text-3xl font-bold text-slate-900 mb-2">Eksplorasi Kampus Impian LOLOLOLOL</h1>
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">Eksplorasi Kampus Impian</h1>
             <p class="text-lg text-slate-500">Temukan universitas terbaik untuk menunjang roadmap karirmu.</p>
         </div>
 
