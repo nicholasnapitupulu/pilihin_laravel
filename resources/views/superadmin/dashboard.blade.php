@@ -41,17 +41,30 @@
     <script>
         const ctx = document.getElementById('userGrowthChart').getContext('2d');
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line', // line chart
             data: {
                 labels: {!! json_encode($chartLabels) !!},
                 datasets: [{
                     label: 'Siswa Baru',
                     data: {!! json_encode($chartData) !!},
-                    backgroundColor: '#8b5cf6',
-                    borderRadius: 8
+                    borderColor: '#8b5cf6',      
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)', 
+                    tension: 0.4,                
+                    fill: true,                  
+                    pointBackgroundColor: '#8b5cf6', 
+                    pointRadius: 4              
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false }
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 } // Memastikan angka di sumbu Y bulat
+                    }
+                }
+            }
         });
     </script>
 </body>

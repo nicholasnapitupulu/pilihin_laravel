@@ -96,8 +96,21 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Kategori Minat (Penghubung Tes)</label>
-                    <input type="text" name="kategori_relevan" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition font-medium" placeholder="Contoh: Teknologi / Bisnis / Seni">
+                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Kategori Minat (Bisa pilih lebih dari satu)</label>
+                    <select name="kategori_relevan[]" multiple required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition font-medium">
+                        <option value="IT">IT</option>
+                        <option value="Bisnis">Bisnis</option>
+                        <option value="Kedokteran">Kedokteran</option>
+                        <option value="Seni">Seni</option>
+                        <option value="Pendidikan">Pendidikan</option>
+                        <option value="Psikologi">Psikologi</option>
+                        <option value="Manajemen">Manajemen</option>
+                        <option value="Akuntansi">Akuntansi</option>
+                        <option value="Administrasi">Administrasi</option>
+                        <option value="Desain">Desain</option>
+                        <option value="Teknik">Teknik</option>
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1">Tahan tombol Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu.</p>
                 </div>
                 
                 <div>
@@ -138,8 +151,21 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Kategori Minat</label>
-                    <input type="text" name="kategori_relevan" id="edit_kategori_relevan" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition font-medium">
+                    <label class="block text-sm font-bold text-slate-700 mb-1.5">Kategori Minat (Bisa pilih lebih dari satu)</label>
+                    <select name="kategori_relevan[]" id="edit_kategori_relevan" multiple required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none transition font-medium">
+                        <option value="IT">IT</option>
+                        <option value="Bisnis">Bisnis</option>
+                        <option value="Kedokteran">Kedokteran</option>
+                        <option value="Seni">Seni</option>
+                        <option value="Pendidikan">Pendidikan</option>
+                        <option value="Psikologi">Psikologi</option>
+                        <option value="Manajemen">Manajemen</option>
+                        <option value="Akuntansi">Akuntansi</option>
+                        <option value="Administrasi">Administrasi</option>
+                        <option value="Desain">Desain</option>
+                        <option value="Teknik">Teknik</option>
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1">Tahan tombol Ctrl (Windows) atau Cmd (Mac) untuk memilih lebih dari satu.</p>
                 </div>
                 
                 <div>
@@ -163,7 +189,8 @@
     <script>
         function toggleModal(modalID) {
             const modal = document.getElementById(modalID);
-            const content = document.getElementById('modalContent');
+            const contentID = modalID === 'modalTambah' ? 'modalContent' : 'modalEditContent';
+            const content = document.getElementById(contentID);
             
             if (modal.classList.contains('hidden')) {
                 modal.classList.remove('hidden');
@@ -183,7 +210,10 @@
         function openEditModal(data) {
             // 1. Isi value input modal edit secara otomatis berdasarkan data baris yang diklik
             document.getElementById('edit_nama_jurusan').value = data.nama_jurusan;
-            document.getElementById('edit_kategori_relevan').value = data.kategori_relevan;
+            const select = document.getElementById('edit_kategori_relevan');
+            const kategoriArray = data.kategori_relevan.split(', ');
+            Array.from(select.options).forEach(option => {
+            option.selected = kategoriArray.includes(option.value);});
             document.getElementById('edit_deskripsi_singkat').value = data.deskripsi_singkat;
             document.getElementById('edit_prospek_karir').value = data.prospek_karir;
 

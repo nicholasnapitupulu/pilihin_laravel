@@ -5,27 +5,39 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Hasil_Tes; 
+use App\Models\Hasil_Tes;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DashboardController extends Controller
 {
     /**
      * Menampilkan halaman Dashboard beserta Riwayat Tes dengan Pagination
      */
-    public function index()
-    {
-        $user = Auth::user();
-        $nama_user = $user->nama_lengkap;
-        $email_user = $user->email;
-        $user_foto = $user->foto_profil;
+    public function index() {
+        // Hanya ambil data user untuk dashboard profil
+        return view('dashboard', [
+            'nama_user' => auth()->user()->nama_lengkap,
+            'email_user' => auth()->user()->email,
+            'user_foto' => auth()->user()->foto_profil
+        ]);
+    }
 
-        $riwayat_result = Hasil_Tes::where('id_user', $user->id_user)
+    //Page Riwayat Tes
+    public function riwayat() {
+        $riwayat_result = Hasil_Tes::where('id_user', auth()->id())
             ->with('jurusan')
-            ->orderBy('tanggal_tes', 'desc')
-            ->paginate(4)
-            ->withQueryString();
+            ->latest()
+            ->paginate(6);
+            
+        return view('riwayat', compact('riwayat_result'));
+    }
 
-        return view('dashboard', compact('nama_user', 'email_user', 'user_foto', 'riwayat_result'));
+    //fitur export pdf
+    public function exportPdf()
+    {
+        $riwayat_result = Hasil_Tes::where('id_user', auth()->id())->with('jurusan')->get();
+        $pdf = Pdf::loadView('riwayat_pdf', compact('riwayat_result'));
+        return $pdf->download('riwayat-tes-pilih-in.pdf');
     }
 
     /**

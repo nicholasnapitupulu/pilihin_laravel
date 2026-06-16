@@ -41,15 +41,17 @@ class JurusanController extends Controller
         // 1. Validasi input data dari form (termasuk prospek_karir)
         $request->validate([
             'nama_jurusan' => 'required|string|max:255',
-            'kategori_relevan' => 'required|string|max:255',
+            'kategori_relevan' => 'required|array',
             'deskripsi_singkat' => 'required|string',
             'prospek_karir' => 'required|string', // Validasi tambahan
         ]);
 
+        $kategoriString = implode(', ', $request->kategori_relevan);
+
         // 2. Simpan ke database menggunakan Model Jurusan
         Jurusan::create([
             'nama_jurusan' => $request->nama_jurusan,
-            'kategori_relevan' => $request->kategori_relevan,
+            'kategori_relevan' => $kategoriString,
             'deskripsi_singkat' => $request->deskripsi_singkat,
             'prospek_karir' => $request->prospek_karir, // Menyimpan kolom prospek karir
         ]);
@@ -73,16 +75,18 @@ class JurusanController extends Controller
         // 1. Validasi input data
         $request->validate([
             'nama_jurusan'      => 'required|string|max:255',
-            'kategori_relevan'  => 'required|string|max:255',
+            'kategori_relevan'  => 'required|array',
             'deskripsi_singkat' => 'required|string',
             'prospek_karir'     => 'required|string',
         ]);
+
+        $kategoriString = implode(', ', $request->kategori_relevan);
 
         // 2. Cari data berdasarkan ID dan update
         $jurusan = Jurusan::findOrFail($id);
         $jurusan->update([
             'nama_jurusan'      => $request->nama_jurusan,
-            'kategori_relevan'  => $request->kategori_relevan,
+            'kategori_relevan'  => $request->$kategoriString,
             'deskripsi_singkat' => $request->deskripsi_singkat,
             'prospek_karir'     => $request->prospek_karir,
         ]);

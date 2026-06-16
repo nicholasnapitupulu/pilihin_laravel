@@ -10,6 +10,7 @@
             <a href="{{ url('/jurusan') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Jurusan</a>
             <a href="{{ url('/tes') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tes Minat</a>
             <a href="{{ url('/tentang') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Tentang</a>
+            <a href="{{ url('/riwayat-tes') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Riwayat Tes</a>
             <a href="{{ url('/dashboard') }}" class="text-slate-600 hover:text-purple-700 font-semibold text-sm transition">Dashboard</a>
         </div>
 
@@ -86,7 +87,9 @@
             <a href="{{ url('/jurusan') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Jurusan</a>
             <a href="{{ url('/tes') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tes Minat</a>
             <a href="{{ url('/tentang') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Tentang</a>
+            <a href="{{ url('/riwayat-tes') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Riwayat Tes</a>
             <a href="{{ url('/dashboard') }}" class="block px-3 py-3 rounded-xl text-base font-medium text-slate-700 hover:bg-purple-50">Dashboard</a>
+            
             
             <div class="border-t border-slate-100 my-2"></div>
             

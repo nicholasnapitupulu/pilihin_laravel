@@ -21,9 +21,13 @@ Route::get('/tentang', function () {return view('tentang');});
 // ROUTE USER
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/riwayat-tes', [DashboardController::class, 'riwayat'])->name('riwayat.tes');
     Route::post('/dashboard/update-photo', [DashboardController::class, 'updatePhoto'])->name('profile.update-photo');
     Route::get('/tes', [TesController::class, 'index'])->name('tes.index');
     Route::post('/tes/proses', [TesController::class, 'proses'])->name('tes.proses');
+
+    //export pdf
+    Route::get('/riwayat-tes/export', [DashboardController::class, 'exportPdf'])->name('riwayat.export');
 });
 
 // ROUTE ADMIN

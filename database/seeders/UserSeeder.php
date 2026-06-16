@@ -65,6 +65,24 @@ class UserSeeder extends Seeder
                 'asal_sekolah' => 'SMA 2 Jakarta',
                 'role' => 'user',
                 'created_at' => '2026-05-12 10:44:01',
+            ],
+            [
+                'id_user' => 7,
+                'nama_lengkap' => 'andre',
+                'email' => 'andre@gmail.com',
+                'password' =>  'andre123',
+                'asal_sekolah' => 'SMA 2 Jakarta',
+                'role' => 'user',
+                'created_at' => '2026-05-12 10:44:01',
+            ],
+            [
+                'id_user' => 8,
+                'nama_lengkap' => 'adit',
+                'email' => 'adit@gmail.com',
+                'password' =>  'adit123',
+                'asal_sekolah' => 'SMA 1 Jakarta',
+                'role' => 'user',
+                'created_at' => '2026-06-12 10:44:01',
             ]
 
         ];
