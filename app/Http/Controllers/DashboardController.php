@@ -13,20 +13,20 @@ class DashboardController extends Controller
      * Menampilkan halaman Dashboard beserta Riwayat Tes dengan Pagination
      */
     public function index()
-{
-    $user = Auth::user();
-    $nama_user = $user->nama_lengkap;
-    $email_user = $user->email;
-    $user_foto = $user->foto_profil;
+    {
+        $user = Auth::user();
+        $nama_user = $user->nama_lengkap;
+        $email_user = $user->email;
+        $user_foto = $user->foto_profil;
 
-    // Di DashboardController.php
-$riwayat_result = Hasil_Tes::where('id_user', $user->id_user)
-                        ->with('jurusan')
-                        ->orderBy('tanggal_tes', 'desc')
-                        ->paginate(5); // Angka 5 adalah jumlah data per halaman
+        $riwayat_result = Hasil_Tes::where('id_user', $user->id_user)
+            ->with('jurusan')
+            ->orderBy('tanggal_tes', 'desc')
+            ->paginate(4)
+            ->withQueryString();
 
-    return view('dashboard', compact('nama_user', 'email_user', 'user_foto', 'riwayat_result'));
-}
+        return view('dashboard', compact('nama_user', 'email_user', 'user_foto', 'riwayat_result'));
+    }
 
     /**
      * Mengamankan dan memproses upload foto profil baru
