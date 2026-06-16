@@ -99,7 +99,16 @@
                         </a>
                     </div>
                 </div>
+
+                
             @endforeach
+
+            <div class="mt-8">
+    {{ $riwayat_result->links('pagination::tailwind') }}
+</div>
+
+
+
         @else
             <div class="bg-white rounded-3xl p-12 border border-dashed border-slate-200 text-center text-slate-400">
                 <i class="fa-solid fa-folder-open text-4xl mb-3 block text-slate-300"></i>

@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tes Minat - PILIH.in</title>
     <link href="{{ asset('src/output.css') }}" rel="stylesheet">
+    <style>
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #questionContainer { transition: opacity 0.2s ease; }
+        
+        /* CSS Khusus agar Progress Bar muncul */
+        #progressBar {
+            display: block !important;
+            height: 12px !important;
+            background-color: #2563eb !important;
+            transition: width 0.3s ease;
+        }
+    </style>
 </head>
 <body class="bg-base font-sans text-slate-800">
     
@@ -19,12 +35,12 @@
                     <span id="progressText">0%</span>
                 </div>
                 <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                    <div id="progressBar" class="bg-primary h-full transition-all duration-300" style="width: 0%"></div>
+                    <div id="progressBar" style="width: 0%"></div>
                 </div>
             </div>
 
             <form id="quizForm" action="{{ route('tes.proses') }}" method="POST">
-                @csrf {{-- Token keamanan wajib di Laravel untuk form POST --}}
+                @csrf
                 
                 <div id="hiddenAnswersContainer"></div>
                 <div id="questionContainer" class="min-h-[250px]"></div>
@@ -45,7 +61,6 @@
     </main>
 
     <script>
-        // Mengubah data dari Laravel Controller menjadi Array JSON di JavaScript
         const questions = @json($questions);
         let currentStep = 0;
         const totalSteps = questions.length;
@@ -79,7 +94,6 @@
                 `;
                 container.style.opacity = 1;
             }, 150);
-
             updateUI();
         }
 
@@ -110,14 +124,14 @@
                 hiddenContainer.appendChild(input);
             }
 
-            renderQuestion();
+            updateUI();
 
-            if (currentStep < totalSteps - 1) {
-                setTimeout(() => {
+            setTimeout(() => {
+                if (currentStep < totalSteps - 1) {
                     currentStep++;
                     renderQuestion();
-                }, 300);
-            }
+                }
+            }, 400);
         }
 
         function changeQuestion(n) {
@@ -125,7 +139,6 @@
                 alert("Silakan pilih jawaban terlebih dahulu!");
                 return;
             }
-
             currentStep += n;
             renderQuestion();
         }
@@ -133,9 +146,12 @@
         function updateUI() {
             if (totalSteps === 0) return;
 
-            const progress = ((currentStep + 1) / totalSteps) * 100;
-            document.getElementById('progressBar').style.width = `${progress}%`;
-            document.getElementById('progressText').innerText = `${Math.round(progress)}%`;
+            const progress = Math.round((Object.keys(answers).length / totalSteps) * 100);
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+
+            if (progressBar) progressBar.style.width = progress + '%';
+            if (progressText) progressText.innerText = progress + '%';
 
             document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 0);
             
@@ -150,15 +166,6 @@
 
         renderQuestion();
     </script>
-
-    <style>
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        #questionContainer { transition: opacity 0.2s ease; }
-    </style>
 
     @include('components.footer')
 </body>
